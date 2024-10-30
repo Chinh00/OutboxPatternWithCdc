@@ -1,0 +1,25 @@
+{
+  "name": "cdc-outbox-pattern",
+  "config": {
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "database.hostname": "sqlserver",
+    "database.port": "1433",
+    "database.user": "sa",
+    "database.password": "@P@ssw0rd02",
+    "database.names": "cdcdatabase",
+    "topic.prefix": "cdc",
+    "table.include.list": "dbo.ProductOutboxes, dbo.CategoryOutboxes",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+    "schema.history.internal.kafka.topic": "schemahistory.cdc",
+    "database.encrypt": false,
+
+    "transforms": "outbox",
+    "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
+    "transforms.outbox.table.field.event.key" : "AggregateId",
+    "transforms.outbox.table.field.event.id" : "Id",
+    "transforms.outbox.table.field.event.payload" : "Payload",
+    "transforms.outbox.table.field.event.payload.id" : "AggregateId",
+    "transforms.outbox.route.by.field" : "AggregateType",
+    "poll.interval.ms": "100"
+  }
+}
